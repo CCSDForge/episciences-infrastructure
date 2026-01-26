@@ -12,9 +12,13 @@ name: "CodeQL advanced configuration"
 on:
   push:
     branches: [ main, preprod ]
+    paths:
+      - 'apps/episciences-citations/**'
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ main, preprod ]
+    paths:
+      - 'apps/episciences-citations/**'
   schedule:
     - cron: '0 22 * * *'
 
@@ -46,9 +50,11 @@ jobs:
           languages: ${{ matrix.language }}
           tools: latest
           config: |
+            paths:
+              - 'apps/episciences-citations'
             paths-ignore:
               - '**/*.test.js'
-              - 'tests/js/**'
+              - '**/tests/**'
           # If you wish to specify custom queries, you can do so here or in a config file.
           # By default, queries listed here will override any specified in a config file.
           # Prefix the list here with "+" to use these queries and those in the config file.

@@ -1,3 +1,0 @@
-# This is not place for bots
-User-Agent: *
-Disallow: /

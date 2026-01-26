@@ -20,6 +20,7 @@ help: ## Show this help message
 
 urls: ## Show service URLs
 	@echo "🌐 Service URLs:"
+	@echo "  🛠️  Traefik:     https://traefik.episciences.org/dashboard/"
 	@echo "  🔍 Solr:        https://solr.episciences.org"
 	@echo "  🐘 phpMyAdmin:  https://pma.episciences.org"
 	@echo ""
@@ -27,9 +28,10 @@ urls: ## Show service URLs
 
 up: ## Start containers in detached mode
 	$(DOCKER_COMPOSE) up -d
+	@$(MAKE) -s urls
 
-build: ## Build or rebuild services
-	$(DOCKER_COMPOSE) build
+build: ## Pull or rebuild services
+	$(DOCKER_COMPOSE) pull
 
 restart: ## Restart containers
 	$(DOCKER_COMPOSE) restart

@@ -6,7 +6,7 @@ CNTR_NAME_PHP := epi-citations-php-fpm
 CNTR_APP_DIR := /var/www/htdocs
 CNTR_APP_USER := www-data
 
-MYSQL_CONNECT_CITATIONS:= mysql -u root -proot -h 127.0.0.1 -P 33063 citations
+MYSQL_CONNECT_CITATIONS:= mysql -u epi-citations -pepi-citations -h 127.0.0.1 -P 33063 epi-citations
 
 .PHONY: build up down clean help generate-ssl-certs test test-php test-js test-unit test-integration test-functional lint lint-php lint-js coverage install-deps npm-install npm-build db-test-create db-test-migrate db-test-fixtures db-test-reset ci
 
@@ -22,8 +22,8 @@ up: ## Start all the docker containers
 	@echo "====================================================================="
 	@echo "Make sure you have [127.0.0.1 localhost citations-dev.episciences.org] in /etc/hosts"
 	@echo "Citation Manager (HTTPS) : https://citations-dev.episciences.org/"
-	@echo "Citation Manager (HTTP)  : http://citations-dev.episciences.org:8081/ (redirects to HTTPS)"
-	@echo "PhpMyAdmin               : http://localhost:8002/"
+	@echo "Citation Manager (HTTP)  : http://citations-dev.episciences.org/"
+	@echo "PhpMyAdmin               : http://pma.episciences.org/"
 	@echo "====================================================================="
 	@echo "Note: HTTPS uses self-signed certificate. Browser will show security warning."
 	@echo "      To regenerate SSL certificates, run: make generate-ssl-certs"
@@ -57,7 +57,7 @@ restart-php: ## Restart PHP-FPM Container
 	$(DOCKER_COMPOSE) restart $(CNTR_NAME_PHP)
 
 can-i-use-update: ## To be launched when Browserslist: caniuse-lite is outdated.
-	$(NPX) update-browserslist-db@latest
+	$(DOCKER_COMPOSE) exec -w $(CNTR_APP_DIR) $(CNTR_NAME_PHP) $(NPX) update-browserslist-db@latest
 
 enter-container-php: ## Open shell on PHP container
 	$(DOCKER) exec -it $(CNTR_NAME_PHP) sh -c "cd /var/www/htdocs && /bin/bash"

@@ -3,8 +3,16 @@ name: Lint
 on:
   push:
     branches: [ main, preprod ]
+    paths:
+      - 'apps/episciences-citations/**'
   pull_request:
     branches: [ main, preprod ]
+    paths:
+      - 'apps/episciences-citations/**'
+
+defaults:
+  run:
+    working-directory: apps/episciences-citations
 
 jobs:
   phpstan:
@@ -24,8 +32,8 @@ jobs:
       - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
-          path: vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          path: apps/episciences-citations/vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('apps/episciences-citations/composer.lock') }}
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
@@ -46,6 +54,7 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
+          cache-dependency-path: apps/episciences-citations/package-lock.json
 
       - name: Install dependencies
         run: npm ci

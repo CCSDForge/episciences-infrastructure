@@ -3,6 +3,7 @@ services:
     image: traefik:v3.6.7
     container_name: traefik
     command:
+      - "--api.dashboard=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
@@ -14,6 +15,15 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - epi-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.episciences.org`)"
+      - "traefik.http.routers.traefik.entrypoints=web"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik-secure.rule=Host(`traefik.episciences.org`)"
+      - "traefik.http.routers.traefik-secure.entrypoints=websecure"
+      - "traefik.http.routers.traefik-secure.tls=true"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
 
   solr:
     image: solr:9.9
@@ -144,11 +154,15 @@ services:
       - mysql/citations/mysql.env
     networks:
       - epi-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
 
   pma:
     container_name: 'episciences-db-phpmyadmin'
-    image: "phpmyadmin:latest"
+    image: "phpmyadmin:5-fpm-alpine"
     environment:
       - "PMA_PMADB=pma"
       - "PMA_CONTROLUSER=root"

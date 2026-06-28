@@ -1,11 +1,12 @@
 services:
   traefik:
     image: traefik:v3.6.7
-    container_name: traefik
+    container_name: episciences-traefik
     command:
       - "--api.dashboard=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=epi-network"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
     ports:
@@ -153,7 +154,9 @@ services:
     env_file:
       - mysql/citations/mysql.env
     networks:
-      - epi-network
+      epi-network:
+        aliases:
+          - epi-citations-db
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
@@ -195,7 +198,7 @@ services:
 networks:
   epi-network:
     name: epi-network
-    driver: bridge
+    external: true
 
 volumes:
   mysql-db-episciences:

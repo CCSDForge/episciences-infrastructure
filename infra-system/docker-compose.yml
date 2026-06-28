@@ -82,7 +82,9 @@ services:
     env_file:
       - mysql/episciences/mysql.env
     networks:
-      - epi-network
+      epi-network:
+        aliases:
+          - db-episciences
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s

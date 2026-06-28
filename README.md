@@ -47,11 +47,43 @@ make solr-setup  # upload configset to ZooKeeper + create Solr collection
 
 ### Service URLs (Local Development)
 
-*   **Traefik Dashboard:** [https://traefik.episciences.org/dashboard/](https://traefik.episciences.org/dashboard/)
-*   **Solr:** [https://solr.episciences.org](https://solr.episciences.org)
-*   **phpMyAdmin:** [https://pma.episciences.org](https://pma.episciences.org)
+All URLs use HTTPS with Traefik's auto-signed certificate (browser will show a security warning — click "Advanced > Proceed").
 
-> **Note:** Ensure these domains map to `127.0.0.1` in your `/etc/hosts` file.
+| Service | URL | Notes |
+| :--- | :--- | :--- |
+| Traefik Dashboard | https://traefik.episciences.org/dashboard/ | Proxy routing overview |
+| Solr | https://solr.episciences.org | Search index admin |
+| phpMyAdmin | https://pma.episciences.org | MySQL admin (all 4 DBs) |
+
+### Connected Applications
+
+The following projects connect to this infrastructure via the shared `epi-network` Docker network.
+Start this infra first (`make up`) before starting any application.
+
+| Application | Repository | Dev URL | Description |
+| :--- | :--- | :--- | :--- |
+| episciences-gpl | CCSDForge/episciences | https://dev.episciences.org | Main journal platform |
+| episciences-gpl | CCSDForge/episciences | https://oai-dev.episciences.org | OAI-PMH endpoint |
+| episciences-gpl | CCSDForge/episciences | https://data-dev.episciences.org | Portal / data site |
+| episciences-citations | CCSDForge/episciences-citations | https://citations-dev.episciences.org | Bibliographic references service |
+| episciences-api | CCSDForge/episciences-api | https://api-dev.episciences.org | Platform REST API |
+| episciences-manager-ng | CCSDForge/episciences-manager-ng | https://manager-ng-dev.episciences.org | Journal manager front-end |
+
+### `/etc/hosts` entries
+
+Add all of the following to `/etc/hosts` to resolve local dev domains:
+
+```
+127.0.0.1 traefik.episciences.org
+127.0.0.1 solr.episciences.org
+127.0.0.1 pma.episciences.org
+127.0.0.1 dev.episciences.org
+127.0.0.1 oai-dev.episciences.org
+127.0.0.1 data-dev.episciences.org
+127.0.0.1 citations-dev.episciences.org
+127.0.0.1 api-dev.episciences.org
+127.0.0.1 manager-ng-dev.episciences.org
+```
 
 ---
 

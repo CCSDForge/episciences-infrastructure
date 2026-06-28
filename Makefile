@@ -23,13 +23,22 @@ help: ## Show this help message
 	@echo ""
 	@$(MAKE) -s urls
 
-urls: ## Show service URLs
-	@echo "🌐 Service URLs:"
-	@echo "  🛠️  Traefik:     https://traefik.episciences.org/dashboard/"
-	@echo "  🔍 Solr:        https://solr.episciences.org"
-	@echo "  🐘 phpMyAdmin:  https://pma.episciences.org"
+urls: ## Show all service and application URLs
+	@echo "🌐 Infrastructure services:"
+	@echo "  🛠️  Traefik:             https://traefik.episciences.org/dashboard/"
+	@echo "  🔍 Solr:                https://solr.episciences.org"
+	@echo "  🐘 phpMyAdmin:          https://pma.episciences.org"
 	@echo ""
-	@echo "💡 Note: Ensure these domains are in your /etc/hosts mapping to 127.0.0.1"
+	@echo "🚀 Connected applications (start each project separately):"
+	@echo "  📰 Journal platform:    https://dev.episciences.org"
+	@echo "  📡 OAI-PMH endpoint:   https://oai-dev.episciences.org"
+	@echo "  🌍 Portal / data site:  https://data-dev.episciences.org"
+	@echo "  📚 Citations service:   https://citations-dev.episciences.org"
+	@echo "  🔌 Platform API:        https://api-dev.episciences.org"
+	@echo "  🖥️  Manager front-end:   https://manager-ng-dev.episciences.org"
+	@echo ""
+	@echo "💡 All domains must resolve to 127.0.0.1 in /etc/hosts"
+	@echo "   TLS is terminated by Traefik (self-signed cert — accept browser warning)"
 
 network: ## Create shared epi-network if it does not exist
 	@docker network inspect epi-network > /dev/null 2>&1 \

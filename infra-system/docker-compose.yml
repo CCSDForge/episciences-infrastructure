@@ -165,7 +165,7 @@ services:
 
   pma:
     container_name: 'episciences-db-phpmyadmin'
-    image: "phpmyadmin:5-fpm-alpine"
+    image: "phpmyadmin:5-apache"
     environment:
       - "PMA_PMADB=pma"
       - "PMA_CONTROLUSER=root"

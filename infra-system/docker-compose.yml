@@ -108,7 +108,9 @@ services:
     env_file:
       - mysql/solr/mysql.env
     networks:
-      - epi-network
+      epi-network:
+        aliases:
+          - db-indexing
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
@@ -132,7 +134,9 @@ services:
     env_file:
       - mysql/auth/mysql.env
     networks:
-      - epi-network
+      epi-network:
+        aliases:
+          - db-auth
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s

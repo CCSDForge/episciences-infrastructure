@@ -28,6 +28,7 @@ urls: ## Show all service and application URLs
 	@echo "  🛠️  Traefik:             https://traefik.episciences.org/dashboard/"
 	@echo "  🔍 Solr:                https://solr.episciences.org"
 	@echo "  🐘 phpMyAdmin:          https://pma.episciences.org"
+	@echo "  📧 Mailpit:             https://mailpit.episciences.org"
 	@echo ""
 	@echo "🚀 Connected applications (start each project separately):"
 	@echo "  📰 Journal platform:    https://dev.episciences.org"

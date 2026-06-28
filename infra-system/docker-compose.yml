@@ -169,6 +169,23 @@ services:
       retries: 10
 
 
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: episciences-mailpit
+    restart: always
+    networks:
+      epi-network:
+        aliases:
+          - mailpit
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mailpit.rule=Host(`mailpit.episciences.org`)"
+      - "traefik.http.routers.mailpit.entrypoints=web"
+      - "traefik.http.routers.mailpit-secure.rule=Host(`mailpit.episciences.org`)"
+      - "traefik.http.routers.mailpit-secure.entrypoints=websecure"
+      - "traefik.http.routers.mailpit-secure.tls=true"
+      - "traefik.http.services.mailpit.loadbalancer.server.port=8025"
+
   pma:
     container_name: 'episciences-db-phpmyadmin'
     image: "phpmyadmin:5-apache"

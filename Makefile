@@ -33,6 +33,7 @@ urls: ## Show all service and application URLs
 	@echo "🚀 Connected applications (start each project separately):"
 	@echo "  📰 Journal platform:    https://dev.episciences.org"
 	@echo "  📡 OAI-PMH endpoint:   https://oai-dev.episciences.org"
+	@echo "  📡 OAI-PMH Next Gen:    https://oaing-dev.episciences.org"
 	@echo "  🌍 Portal / data site:  https://data-dev.episciences.org"
 	@echo "  📚 Citations service:   https://citations-dev.episciences.org"
 	@echo "  🔌 Platform API:        https://api-dev.episciences.org"

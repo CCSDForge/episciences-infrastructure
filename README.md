@@ -64,6 +64,7 @@ Start this infra first (`make up`) before starting any application.
 | :--- | :--- | :--- | :--- |
 | episciences-gpl | CCSDForge/episciences | https://dev.episciences.org | Main journal platform |
 | episciences-gpl | CCSDForge/episciences | https://oai-dev.episciences.org | OAI-PMH endpoint |
+| episciences-oai | CCSDForge/episciences-oai | https://oaing-dev.episciences.org | OAI-PMH Next Gen endpoint |
 | episciences-gpl | CCSDForge/episciences | https://data-dev.episciences.org | Portal / data site |
 | episciences-citations | CCSDForge/episciences-citations | https://citations-dev.episciences.org | Bibliographic references service |
 | episciences-api | CCSDForge/episciences-api | https://api-dev.episciences.org | Platform REST API |
@@ -79,6 +80,7 @@ Add all of the following to `/etc/hosts` to resolve local dev domains:
 127.0.0.1 pma.episciences.org
 127.0.0.1 dev.episciences.org
 127.0.0.1 oai-dev.episciences.org
+127.0.0.1 oaing-dev.episciences.org
 127.0.0.1 data-dev.episciences.org
 127.0.0.1 citations-dev.episciences.org
 127.0.0.1 api-dev.episciences.org

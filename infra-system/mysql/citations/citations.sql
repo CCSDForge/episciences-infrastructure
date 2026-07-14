@@ -11,6 +11,18 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `doctrine_migration_versions`
+--
+
+CREATE TABLE `doctrine_migration_versions` (
+                            `version` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+                            `executed_at` datetime DEFAULT NULL,
+                            `execution_time` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `document`
 --
 
@@ -119,4 +131,11 @@ ALTER TABLE `messenger_messages`
 --
 ALTER TABLE `paper_references`
     MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- Dumping data for table `doctrine_migration_versions`
+--
+INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
+    ('DoctrineMigrations\\Version20230531113825', NOW(), 0);
+
 COMMIT;

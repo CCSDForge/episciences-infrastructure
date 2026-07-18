@@ -54,6 +54,7 @@ All URLs use HTTPS with Traefik's auto-signed certificate (browser will show a s
 | Traefik Dashboard | https://traefik.episciences.org/dashboard/ | Proxy routing overview |
 | Solr | https://solr.episciences.org | Search index admin |
 | phpMyAdmin | https://pma.episciences.org | MySQL admin (all 4 DBs) |
+| SonarQube | https://sonar.episciences.org | Code quality & security dashboard |
 
 ### Connected Applications
 
@@ -70,6 +71,54 @@ Start this infra first (`make up`) before starting any application.
 | episciences-api | CCSDForge/episciences-api | https://api-dev.episciences.org | Platform REST API |
 | episciences-manager-ng | CCSDForge/episciences-manager-ng | https://manager-ng-dev.episciences.org | Journal manager front-end |
 
+## SonarQube Setup & Analysis
+
+SonarQube is integrated to analyze code quality and security of local projects.
+
+### System Configuration (Linux Host)
+Since SonarQube embeds Elasticsearch, you must increase the virtual memory map count on your host machine:
+```bash
+sudo sysctl -w vm.max_map_count=524288
+```
+To make this setting persistent, add `vm.max_map_count=524288` to `/etc/sysctl.conf`.
+
+### Default Credentials
+*   **URL**: [https://sonar.episciences.org](https://sonar.episciences.org) (or [http://localhost:9000](http://localhost:9000))
+*   **Login / Password**: `admin` / `admin` (you will be prompted to change it on first login).
+
+### Analyzing other local Docker projects
+To send reports from other local projects running inside Docker to this SonarQube instance, you have two options:
+
+#### Option A: Using the shared `epi-network` Docker network (Recommended)
+Attach the scanner container of the target project to the `epi-network` network.
+
+1. Declare the external network in your project's `docker-compose.yml`:
+   ```yaml
+   networks:
+     epi-network:
+       external: true
+   ```
+2. Configure your scanner service to connect to the SonarQube server using its container name:
+   ```yaml
+   services:
+     sonar-scanner:
+       image: sonarsource/sonar-scanner-cli
+       networks:
+         - epi-network
+       command: >
+         sonar-scanner
+         -Dsonar.host.url=http://episciences-sonarqube:9000
+         -Dsonar.projectKey=my-project-key
+         -Dsonar.sources=.
+   ```
+
+#### Option B: Connecting via the host gateway
+If the scanner container runs outside `epi-network`, you can direct it to the host machine's port `9000` via the Docker host gateway:
+```bash
+sonar-scanner -Dsonar.host.url=http://host.docker.internal:9000 -Dsonar.projectKey=my-project-key -Dsonar.sources=.
+```
+*Note: Under Linux, ensure that the container configuration includes `extra_hosts: ["host.docker.internal:host-gateway"]` to resolve the host gateway.*
+
 ### `/etc/hosts` entries
 
 Add all of the following to `/etc/hosts` to resolve local dev domains:
@@ -78,6 +127,7 @@ Add all of the following to `/etc/hosts` to resolve local dev domains:
 127.0.0.1 traefik.episciences.org
 127.0.0.1 solr.episciences.org
 127.0.0.1 pma.episciences.org
+127.0.0.1 sonar.episciences.org
 127.0.0.1 dev.episciences.org
 127.0.0.1 oai-dev.episciences.org
 127.0.0.1 oaing-dev.episciences.org

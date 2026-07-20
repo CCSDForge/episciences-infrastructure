@@ -232,6 +232,12 @@ services:
       - sonarqube-data:/opt/sonarqube/data
       - sonarqube-extensions:/opt/sonarqube/extensions
       - sonarqube-logs:/opt/sonarqube/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/api/system/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sonarqube.rule=Host(`sonar.episciences.org`)"

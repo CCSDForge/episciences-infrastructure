@@ -48,6 +48,16 @@ network: ## Create shared epi-network if it does not exist
 		|| (docker network create epi-network && echo "✅ epi-network created")
 
 up: network ## Start all containers in detached mode
+	@if [ -f /proc/sys/vm/max_map_count ]; then \
+		MAP_COUNT=$$(cat /proc/sys/vm/max_map_count); \
+		if [ $$MAP_COUNT -lt 262144 ]; then \
+			echo "\033[33m⚠️  [Warning] vm.max_map_count is $$MAP_COUNT, which is too low for SonarQube.\033[0m"; \
+			echo "   Elasticsearch (embedded in SonarQube) will likely crash."; \
+			echo "   Please run the following command on your host to increase it:"; \
+			echo "   \033[36msudo sysctl -w vm.max_map_count=524288\033[0m"; \
+			echo ""; \
+		fi; \
+	fi
 	$(DOCKER_COMPOSE) up -d
 	@$(MAKE) -s urls
 

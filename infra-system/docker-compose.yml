@@ -15,7 +15,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
-      - epi-network
+      epi-network:
+        aliases:
+          - citations-dev.episciences.org
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.episciences.org`)"

@@ -10,7 +10,7 @@ CONFIGSETS_DIR  := /opt/configsets
 .DEFAULT_GOAL := help
 
 .PHONY: help up network build restart down logs ps urls \
-        db-import-episciences db-import-auth db-import-indexing db-import-citations db-import \
+        db-import-episciences db-import-auth db-import-indexing db-import-citations db-import-inbox db-import \
         solr-upload-config solr-create-collection solr-setup
 
 help: ## Show this help message
@@ -39,6 +39,7 @@ urls: ## Show all service and application URLs
 	@echo "  📚 Citations service:   https://citations-dev.episciences.org"
 	@echo "  🔌 Platform API:        https://api-dev.episciences.org"
 	@echo "  🖥️  Manager front-end:   https://manager-ng-dev.episciences.org"
+	@echo "  📥 COAR Notify Inbox:   https://inbox-dev.episciences.org"
 	@echo ""
 	@echo "💡 All domains must resolve to 127.0.0.1 in /etc/hosts"
 	@echo "   TLS is terminated by Traefik (self-signed cert — accept browser warning)"
@@ -107,7 +108,16 @@ db-import-citations: ## Import citations database (resets existing data)
 		< infra-system/mysql/citations/citations.sql
 	@echo "✅ citations DB imported"
 
-db-import: db-import-episciences db-import-auth db-import-indexing db-import-citations ## Import all databases
+db-import-inbox: ## Create and import inbox database on db-episciences (resets existing data)
+	@echo "⏳ Importing inbox DB..."
+	@docker exec -i episciences-db-episciences \
+		mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS \`inbox-local\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; GRANT ALL PRIVILEGES ON \`inbox-local\`.* TO 'episciences'@'%'; FLUSH PRIVILEGES;"
+	@docker exec -i episciences-db-episciences \
+		mysql -h 127.0.0.1 -u root -proot inbox-local \
+		< infra-system/mysql/inbox/inbox.schema.sql
+	@echo "✅ inbox DB imported"
+
+db-import: db-import-episciences db-import-auth db-import-indexing db-import-citations db-import-inbox ## Import all databases
 
 # ─── Solr ─────────────────────────────────────────────────────────────────────
 

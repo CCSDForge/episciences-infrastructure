@@ -36,11 +36,12 @@ make solr-setup  # upload configset to ZooKeeper + create Solr collection
 | `make logs` | View output from containers |
 | `make ps` | List running containers |
 | `make urls` | Show local service URLs |
-| `make db-import` | Import all four MySQL databases |
+| `make db-import` | Import all MySQL databases |
 | `make db-import-episciences` | Import episciences DB only |
 | `make db-import-auth` | Import auth (cas_users) DB only |
 | `make db-import-indexing` | Import Solr indexing queue DB only |
 | `make db-import-citations` | Import citations DB only |
+| `make db-import-inbox` | Import inbox DB only |
 | `make solr-upload-config` | Upload episciences configset to ZooKeeper |
 | `make solr-create-collection` | Create Solr collection `episciences` |
 | `make solr-setup` | Upload configset + create collection |
@@ -70,6 +71,7 @@ Start this infra first (`make up`) before starting any application.
 | episciences-citations | CCSDForge/episciences-citations | https://citations-dev.episciences.org | Bibliographic references service |
 | episciences-api | CCSDForge/episciences-api | https://api-dev.episciences.org | Platform REST API |
 | episciences-manager-ng | CCSDForge/episciences-manager-ng | https://manager-ng-dev.episciences.org | Journal manager front-end |
+| coar-notify-inbox | ccsd/coar-notify-inbox | https://inbox-dev.episciences.org | COAR Notify LDN Inbox |
 
 ## SonarQube Setup & Analysis
 
@@ -135,6 +137,7 @@ Add all of the following to `/etc/hosts` to resolve local dev domains:
 127.0.0.1 citations-dev.episciences.org
 127.0.0.1 api-dev.episciences.org
 127.0.0.1 manager-ng-dev.episciences.org
+127.0.0.1 inbox-dev.episciences.org
 ```
 
 ---

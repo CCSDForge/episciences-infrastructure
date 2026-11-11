@@ -221,12 +221,36 @@ services:
       - "traefik.http.routers.pma-secure.tls=true"
       - "traefik.http.services.pma.loadbalancer.server.port=80"
 
+  sonarqube-db:
+    image: postgres:17-alpine
+    container_name: episciences-sonarqube-db
+    restart: always
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar_password
+      POSTGRES_DB: sonarqube
+    volumes:
+      - sonarqube-db-data:/var/lib/postgresql/data
+    networks:
+      - epi-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sonar -d sonarqube"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   sonarqube:
     image: sonarqube:community
     container_name: episciences-sonarqube
     restart: always
+    depends_on:
+      sonarqube-db:
+        condition: service_healthy
     environment:
       - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=sonar_password
+      - SONAR_JDBC_URL=jdbc:postgresql://episciences-sonarqube-db:5432/sonarqube
     ports:
       - "9000:9000"
     networks:
@@ -261,6 +285,7 @@ volumes:
   mysql-db-auth:
   mysql-db-citations:
   solr_data:
+  sonarqube-db-data:
   sonarqube-data:
   sonarqube-extensions:
   sonarqube-logs:

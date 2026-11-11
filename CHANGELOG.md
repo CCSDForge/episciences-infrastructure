@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+- **SonarQube PostgreSQL database**: added dedicated `postgres:17-alpine` service (`sonarqube-db`) and persistent volume to enable seamless data migrations across SonarQube updates.
 - **SonarQube**: added SonarQube service accessible via Traefik (`https://sonar.episciences.org`) for code quality and security analysis.
 - **Mailpit**: added Mailpit container for local email interception (SMTP on port 1025, web UI on port 8025 at `https://mailpit.episciences.org`).
 - **Makefile targets**:

@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Documentation**: added first-time setup instructions, service URLs table, Makefile command reference, and OAI-PMH Next Gen endpoints to `README.md`.
 
 ### Changed
+- **Traefik**: upgraded Traefik image to `traefik:v3.7`.
 - **Shared infrastructure centralization**: centralized shared Docker services (MySQL, Solr, phpMyAdmin, Traefik) and configured Traefik reverse proxy with HTTPS.
 - **Network aliases on `epi-network`**:
   - Added Traefik network alias `citations-dev.episciences.org` to allow dynamic DNS resolution and TLS termination for server-to-server calls.
